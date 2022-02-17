@@ -17,6 +17,7 @@ class Sport
 		int win_rate(const int & games_won, const int & games_played); 
 		// calculate loss rate
 		int loss_rate(const int & games_lost, const int & games_played);
+		// operators
 	protected:
 		// number of games played
 		int game_played;
@@ -46,6 +47,7 @@ class Hockey : public Sport
 		int saves_goal_ratio();
 		// reset stats
 		bool reset();
+		// operators
 	private:
 		// number of draws
 		int saves;
@@ -73,7 +75,7 @@ class Basketball : public Sport
 		int three_fg_percentage();
 		// calulate number of fouls per minute
 		int fouls_per_minute();
-
+		// operators
 	private:
 		// amoount of baskets made
 		int field_goals;
@@ -101,6 +103,7 @@ class Soccer : public Sport
 		float avg_possesion();
 		// calcultate number of shots on goal per game
 		int shots_per_game;
+		// operators
 	private:
 		// amount of goals scored
 		int goals;
