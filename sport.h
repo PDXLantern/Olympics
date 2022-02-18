@@ -18,6 +18,11 @@ class Sport
 		// calculate loss rate
 		int loss_rate(const int & games_lost, const int & games_played);
 		// operators
+		friend bool operator == (const Sport & lhs, const Sport & rhs);
+		// input overload
+		friend std::istream & operator >> (std::istream & input, Sport & rhs);
+		// output overload
+		friend std::ostream & operator << (std::ostream & output, const Sport & rhs);
 	protected:
 		// number of games played
 		int game_played;
@@ -48,6 +53,11 @@ class Hockey : public Sport
 		// reset stats
 		bool reset();
 		// operators
+		friend bool operator != (const Hockey & lhs, const Hockey & rhs);
+		// input overload
+		friend std::istream & operator >> (std::istream & input, const Hockey & rhs);
+		// output overload
+		friend std::ostream & operator << (std::ostream & output, const Hockey & rhs);
 	private:
 		// number of draws
 		int saves;
@@ -76,6 +86,11 @@ class Basketball : public Sport
 		// calulate number of fouls per minute
 		int fouls_per_minute();
 		// operators
+		friend bool operator != (const Basketball & lhs, const Basketball & rhs);
+		// input overload
+		friend std::istream & operator >> (std::istream & input, const Basketball & rhs);
+		// output overload
+		friend std::ostream & operator << (std::ostream & output, const Basketball & rhs);
 	private:
 		// amoount of baskets made
 		int field_goals;
@@ -103,7 +118,12 @@ class Soccer : public Sport
 		float avg_possesion();
 		// calcultate number of shots on goal per game
 		int shots_per_game;
-		// operators
+		// != overload
+		friend bool operator != (const Soccer & lhs, const Soccer & rhs);
+		// input overload
+		friend std::istream & operator >> (std::istream & input, const Basketball & rhs);
+		// output overload
+		friend std::ostream & operator << (std::ostream & output, const Basketball & rhs);
 	private:
 		// amount of goals scored
 		int goals;
@@ -112,3 +132,5 @@ class Soccer : public Sport
 		// amount of shot taken at the goal
 		int shots_on_goal;
 };
+
+

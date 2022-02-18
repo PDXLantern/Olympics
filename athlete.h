@@ -14,7 +14,14 @@ class Athlete
 		bool display();
 		bool insert();
 		bool assign_sport(const int & data);
-		// operators	
+		// = overload
+		Athlete & operator = (const Athlete & rhs);
+		// + overload
+		Athlete & operator + (const Athlete & rhs);
+		// input overload
+		friend std::istream & operator >> (std::istream & input, Athlete & rhs);
+		// output overload
+		friend std::ostream & operator << (std::ostream & output, const Athlete & rhs);
 	protected:
 		char * name;
 		std::string * country;
@@ -35,9 +42,14 @@ class BinaryTree
 		bool search() const;
 		bool insert() const;
 		bool remove() const;
-		// operators
+		// add an athlete to data structure
+		BinaryTree & operator +=(const BinaryTree & rhs);
+		// input overload
+		friend std::istream & operator >> (std::istream & input, BinaryTree & rhs);
+		// output overload
+		friend std::ostream & operator << (std::ostream & output, const BinaryTree & rhs);
 	private:
 		Athlete * root;
 		Athelete * left;
 		Athelte * right;
-}
+};
