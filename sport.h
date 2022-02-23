@@ -2,6 +2,7 @@
 // Purpose: The purpose of this file is to store the base class and the derived classes.
 // The base class will be the sport class, which will manage the common elements of the derived classess.
 // Each derived class is a different sports from the Olympics, such as Soccer, Basketball, & Boxing.
+#pragma once
 #include <iostream>
 // base class
 class Sport
@@ -11,12 +12,14 @@ class Sport
 		Sport();
 		// copy constructor
 		Sport(const Sport & aSport);
+		// constructor w args
+		Sport(const int from_GP, const int from_wins, const int from_loss);
 		// display
 		bool display() const;
 		// calculate win rate
-		int win_rate(const int & games_won, const int & games_played); 
+		float win_rate(const int & games_won, const int & games_played); 
 		// calculate loss rate
-		int loss_rate(const int & games_lost, const int & games_played);
+		float loss_rate(const int & games_lost, const int & games_played);
 		// operators
 		friend bool operator == (const Sport & lhs, const Sport & rhs);
 		// input overload
@@ -25,13 +28,15 @@ class Sport
 		friend std::ostream & operator << (std::ostream & output, const Sport & rhs);
 	protected:
 		// number of games played
-		int game_played;
+		int games_played;
 		// number of games won
 		int wins;
 		// number of games lost
 		int loss;
 		// the win rate
-		int total_win_rate;
+		float total_win_rate;
+		// the loss rate
+		float total_loss_rate;
 };
 
 // derived class Hockey
@@ -117,13 +122,13 @@ class Soccer : public Sport
 		// calculate avg possession %
 		float avg_possesion();
 		// calcultate number of shots on goal per game
-		int shots_per_game;
+		int shots_per_game();
 		// != overload
 		friend bool operator != (const Soccer & lhs, const Soccer & rhs);
 		// input overload
-		friend std::istream & operator >> (std::istream & input, const Basketball & rhs);
+		friend std::istream & operator >> (std::istream & input, const Soccer & rhs);
 		// output overload
-		friend std::ostream & operator << (std::ostream & output, const Basketball & rhs);
+		friend std::ostream & operator << (std::ostream & output, const Soccer & rhs);
 	private:
 		// amount of goals scored
 		int goals;
