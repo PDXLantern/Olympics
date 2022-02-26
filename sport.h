@@ -13,11 +13,17 @@ class Sport
 		// copy constructor
 		Sport(const Sport & aSport);
 		// constructor w args
-		Sport(const int from_GP, const int from_wins, const int from_loss);
+		Sport(const int & from_GP, const int & from_wins, const int & from_loss);
 		// display
 		bool display() const;
+		// add game
+		bool add_game(const int & WinOrLoss);
+		// return win rate
+		float win_rate() const;
 		// calculate win rate
 		float win_rate(const int & games_won, const int & games_played); 
+		// return loss rate
+		float loss_rate() const;
 		// calculate loss rate
 		float loss_rate(const int & games_lost, const int & games_played);
 		// operators
@@ -45,16 +51,18 @@ class Hockey : public Sport
 	public:
 		// hockey constructor
 		Hockey();
+		// hockey constructor w args
+		Hockey(const int & num_saves, const int & num_penalties, const int & num_goals, const int & from_GP, const int & from_wins, const int & from_loss);
 		// hockey compare 
-		bool compare(const Hockey & aHockey);
+		bool compare(const Hockey & rhs);
 		// hockey display 
 		bool display() const;
 		// add a game to update stats
-		bool add_game(const int & num_saves, const int & num_penalties, const int & num_goals);
+		bool add_game(const int & num_saves, const int & num_penalties, const int & num_goals, const int & WinOrLoss);
 		// calculate average number of saves per game
-		int avg_saves();
+		float saves_per_game() const;
 		// calculate saves to goals ratio
-		int saves_goal_ratio();
+		float goals_per_game() const;
 		// reset stats
 		bool reset();
 		// operators
@@ -78,18 +86,20 @@ class Basketball : public Sport
 	public:
 		// basketball constructor
 		Basketball();
+		// basketball constructor w args
+		Basketball(const int & num_field_goals, const int & num_three_fg, const int & num_fouls, const int & from_GP, const int & from_wins, const int & from_loss);
 		// basketball compare
-		bool compare(const Basketball & aBasketball);
+		bool compare(const Basketball & rhs) const;
 		// basketball display
 		bool display() const;
 		// basketball add game
-		bool add_game(const int & num_field_goals, const int & num_three_fg, const int & fouls);
+		bool add_game(const int & num_field_goals, const int & num_three_fg, const int & fouls, const int & WinOrLoss);
 		// calculate avg field goals per game
-		int avg_field_goals();
+		float avg_field_goals() const;
 		// calculate 3 point %
-		int three_fg_percentage();
+		float three_fg_percentage() const;
 		// calulate number of fouls per minute
-		int fouls_per_minute();
+		float fouls_per_minute() const;
 		// operators
 		friend bool operator != (const Basketball & lhs, const Basketball & rhs);
 		// input overload
@@ -111,8 +121,10 @@ class Soccer : public Sport
 	public:
 		// soccer constructor
 		Soccer();
+		// soccer copy contructor
+		Soccer(const int & num_goals, const int & num_AP, const int & num_SOG, const int & from_GP, const int & from_wins, const int & from_loss);
 		// soccer compare
-		bool compare(const Soccer & aSoccer);
+		bool compare(const Soccer & aSoccer) const;
 		// soccer display
 		bool display() const;
 		// soccer add a game
