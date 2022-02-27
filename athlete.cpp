@@ -13,28 +13,9 @@ Athlete::Athlete()
     // Sport * Data; <- Could be easier to use
 }
 // - athlete copy constructor
-Athlete::Athlete(const Athlete & rhs) : ranking(rhs.ranking)
+Athlete::Athlete(const Athlete & rhs)
 {
-    this->name = new char[strlen(rhs.name) + 1];
-    strcpy(this->name, rhs.name);
-    this->country = new std::string(*rhs.country);
-    switch (rhs.sport_type())
-    {
-        case 0:
-            std::cout << "No Data" << std::endl;
-            break;
-        case 1:
-            hockey_data = new Hockey(*rhs.hockey_data);
-            break;
-        case 2:
-            basketball_data = new Basketball(*rhs.basketball_data);
-            break;
-        case 3:
-            soccer_data = new Soccer(*rhs.soccer_data);
-            break;
-        default:
-            break;
-    }
+    this->copy(rhs);
 }
 // - athlete destructor
 Athlete::~Athlete()
@@ -51,6 +32,37 @@ Athlete::~Athlete()
         delete soccer_data;
     if(basketball_data)
         delete basketball_data;
+}
+// - athlete copy
+bool Athlete::copy (const Athlete & rhs)
+{
+    if(this != &rhs)
+        {
+        this->name = new char[strlen(rhs.name) + 1];
+        strcpy(this->name, rhs.name);
+        this->country = new std::string(*rhs.country);
+        this->ranking = rhs.ranking;
+        switch (rhs.sport_type())
+        {
+            case 0:
+                std::cout << "No Data" << std::endl;
+                break;
+            case 1:
+                hockey_data = new Hockey(*rhs.hockey_data);
+                break;
+            case 2:
+                basketball_data = new Basketball(*rhs.basketball_data);
+                break;
+            case 3:
+                soccer_data = new Soccer(*rhs.soccer_data);
+                break;
+            default:
+                return false;
+                break;
+        }
+        return true;
+    }
+    return false;
 }
 // - athlete compare
 bool Athlete::compare(const Athlete & rhs) const
@@ -90,13 +102,9 @@ int Athlete::sport_type() const
 // - athlete = overload
 bool Athlete::operator = (const Athlete & rhs)
 {
-    return true;
-}
-
-// - athlete + overload
-bool Athlete::operator + (const Athlete & rhs)
-{
-    return true;
+    if(this->copy(rhs))
+        return true;
+    return false;
 }
 // - athlete input overload
 std::istream & operator >> (std::istream & input, Athlete & rhs)
@@ -157,6 +165,15 @@ bool Node::empty() const
     if(left && right)
         return false;
     return true;
+}
+// - node + overload
+bool Node::operator + (Node * rhs)
+{
+    if(left)
+        this->left = rhs;
+    if(right)
+        this->right = rhs;
+    return false;
 }
 // - node input overload
 std::istream & operator >> (std::istream & input, Node & rhs)

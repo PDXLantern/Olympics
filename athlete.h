@@ -15,13 +15,16 @@ class Athlete
 		Athlete(const Athlete & rhs);
 		// destructor
 		~Athlete();
+		// copy
+		bool copy(const Athlete & rhs);
+		// compare 
 		bool compare(const Athlete & rhs) const;
+		// display
 		bool display() const;
+		// get sport data type
 		int sport_type() const;
 		// = overload
 		bool operator = (const Athlete & rhs);
-		// + overload
-		bool operator + (const Athlete & rhs);
 		// input overload
 		friend std::istream & operator >> (std::istream & input, Athlete & rhs);
 		// output overload
@@ -29,9 +32,11 @@ class Athlete
 	protected:
 		// athlete details
 		char * name;
+		// athlete country
 		std::string * country;
+		// athlete offical ranking
 		int ranking;
-		// data 
+		// Sport data types
 		Hockey * hockey_data;
 		Soccer * soccer_data;
 		Basketball * basketball_data;
@@ -55,6 +60,8 @@ class Node : public Athlete
 		bool display() const;
 		// empty
 		bool empty() const;
+		// + operator
+		bool operator + (Node * rhs);
 		// input overload
 		friend std::istream & operator >> (std::istream & input, Node & rhs);
 		// output overload
