@@ -1,5 +1,6 @@
 #include "main.h"
 int main(){
+    /*
     std::cout << "Sport Class" << std::endl;
     Sport test_sport;
     std::cout << test_sport << std::endl;
@@ -46,5 +47,31 @@ int main(){
     test_basketball3.add_game(120, 50, 30, 1);
     std::cout << "Basketball Add Game" << std::endl;
     std::cout << test_basketball3 << std::endl;
+    
+    std::cout << "Soccer Class" << std::endl;
+    Soccer test_soccer;
+    std::cout << test_soccer << std::endl;
+    test_soccer.add_game(3, 60, 10, 1);
+    std::cout << test_soccer << std::endl;
+    Soccer test_soccer2;
+    std::cout << test_soccer2 << std::endl;
+    Soccer test_soccer3(3, 60, 10, 1, 1, 0);
+    std::cout << test_soccer3 << std::endl;
+
+    std::cout << "Compare" << std::endl;
+    std::cout << "Compare 1 & 2" << std::endl;
+    if(test_soccer.compare(test_soccer2))
+        std::cout << "Match" << std::endl;
+    if(test_soccer != test_soccer2)
+        std::cout << "Not a Match" << std::endl;
+    std::cout << "Compare 1 & 3" << std::endl;
+    if(test_soccer.compare(test_soccer3))
+        std::cout << "Match" << std::endl;
+    if(test_soccer != test_soccer3)
+        std::cout << "Not a Match" << std::endl;
+        */
+    std::cout << "Node Class" << std::endl;
+    Node test_node;
+    std::cout << test_node << std::endl;
     return 0;
 }

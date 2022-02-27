@@ -5,16 +5,19 @@
 #include <iostream>
 #include <string>
 #include "sport.h"
+#include <cstring>
 class Athlete
 {
 	public:
+		// constructor
 		Athlete();
-		Athlete(const Athlete & aAthlete);
+		// copy constuctor
+		Athlete(const Athlete & rhs);
+		// destructor
 		~Athlete();
-		bool compare(const Athlete & aAthlete);
-		bool display();
-		bool insert();
-		bool assign_sport(const int & data);
+		bool compare(const Athlete & rhs) const;
+		bool display() const;
+		int sport_type() const;
 		// = overload
 		bool operator = (const Athlete & rhs);
 		// + overload
@@ -24,13 +27,41 @@ class Athlete
 		// output overload
 		friend std::ostream & operator << (std::ostream & output, const Athlete & rhs);
 	protected:
+		// athlete details
 		char * name;
 		std::string * country;
 		int ranking;
+		// data 
 		Hockey * hockey_data;
 		Soccer * soccer_data;
 		Basketball * basketball_data;
 		// Sport * Data; <- Could be easier to use
+};
+
+class Node : public Athlete
+{
+	public: 
+		// constructor
+		Node();
+		// copy constructor
+		Node(const Node & rhs);
+		// destructor
+		~Node();
+		// go to left node
+		Node * go_left() const;
+		// go to right node
+		Node * go_right() const;
+		// display
+		bool display() const;
+		// empty
+		bool empty() const;
+		// input overload
+		friend std::istream & operator >> (std::istream & input, Node & rhs);
+		// output overload
+		friend std::ostream & operator << (std::ostream & output, const Node & rhs);
+	protected:
+		Node * left;
+		Node * right;
 };
 
 class BinaryTree
@@ -50,7 +81,5 @@ class BinaryTree
 		// output overload
 		friend std::ostream & operator << (std::ostream & output, const BinaryTree & rhs);
 	private:
-		Athlete * root;
-		Athlete * left;
-		Athlete * right;
+		Node * root;
 };

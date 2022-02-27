@@ -11,7 +11,7 @@ class Sport
 		// constructor
 		Sport();
 		// copy constructor
-		Sport(const Sport & aSport);
+		Sport(const Sport & rhs);
 		// constructor w args
 		Sport(const int & from_GP, const int & from_wins, const int & from_loss);
 		// display
@@ -51,10 +51,12 @@ class Hockey : public Sport
 	public:
 		// hockey constructor
 		Hockey();
+		// hockey copy constructor
+		Hockey(const Hockey & rhs);
 		// hockey constructor w args
 		Hockey(const int & num_saves, const int & num_penalties, const int & num_goals, const int & from_GP, const int & from_wins, const int & from_loss);
 		// hockey compare 
-		bool compare(const Hockey & rhs);
+		bool compare(const Hockey & rhs) const;
 		// hockey display 
 		bool display() const;
 		// add a game to update stats
@@ -86,6 +88,8 @@ class Basketball : public Sport
 	public:
 		// basketball constructor
 		Basketball();
+		// basketball copy constructor
+		Basketball(const Basketball & rhs);
 		// basketball constructor w args
 		Basketball(const int & num_field_goals, const int & num_three_fg, const int & num_fouls, const int & from_GP, const int & from_wins, const int & from_loss);
 		// basketball compare
@@ -122,19 +126,21 @@ class Soccer : public Sport
 		// soccer constructor
 		Soccer();
 		// soccer copy contructor
+		Soccer(const Soccer & rhs);
+		// soccer constructor w args
 		Soccer(const int & num_goals, const int & num_AP, const int & num_SOG, const int & from_GP, const int & from_wins, const int & from_loss);
 		// soccer compare
-		bool compare(const Soccer & aSoccer) const;
+		bool compare(const Soccer & rhs) const;
 		// soccer display
 		bool display() const;
 		// soccer add a game
-		bool add_game(const int & num_goals, const float & num_possession, const int & num_shots);
+		bool add_game(const int & num_goals, const float & num_AP, const int & num_SOG, const int & WinOrLoss);
 		// calculate avg num_goals per game
-		int avg_goals();
+		int avg_goals() const;
 		// calculate avg possession %
-		float avg_possesion();
+		float avg_possesion() const;
 		// calcultate number of shots on goal per game
-		int shots_per_game();
+		int shots_per_game() const;
 		// != overload
 		friend bool operator != (const Soccer & lhs, const Soccer & rhs);
 		// input overload
@@ -143,11 +149,11 @@ class Soccer : public Sport
 		friend std::ostream & operator << (std::ostream & output, const Soccer & rhs);
 	private:
 		// amount of goals scored
-		int goals;
+		int total_goals;
 		// average ball possession %
-		float avg_possession;
+		float total_AP;
 		// amount of shot taken at the goal
-		int shots_on_goal;
+		int total_SOG;
 };
 
 

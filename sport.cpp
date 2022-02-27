@@ -11,7 +11,7 @@ Sport::Sport()
     total_loss_rate = 0.00;
 }
 // - sport copy constructor
-Sport::Sport(const Sport & aSport) : Sport(aSport.games_played, aSport.wins, aSport.loss)
+Sport::Sport(const Sport & rhs) : Sport(rhs.games_played, rhs.wins, rhs.loss)
 {
 
 }
@@ -41,9 +41,11 @@ bool Sport::add_game(const int & WinOrLoss)
     if(WinOrLoss == 1)
     {
         wins++;
+        this->win_rate(this->wins, this->games_played);
         return true;
     }
     loss++;
+    this->loss_rate(this->loss, this->games_played);
     return true;
 }
 // - sport win rate
@@ -114,13 +116,19 @@ Hockey::Hockey()
     goals = 0;
 }
 // - hockey copy constructor
+Hockey::Hockey(const Hockey & rhs) : Sport(rhs.games_played, rhs.wins, rhs.loss), 
+saves(rhs.saves), penalties(rhs.penalties), goals(rhs.goals)
+{
+
+}
+// - hockey constructor w args
 Hockey::Hockey(const int & num_saves, const int & num_penalties, const int & num_goals, const int & from_GP, const int & from_wins, const int & from_loss) : 
 saves(num_saves), penalties(num_penalties), goals(num_goals), Sport(from_GP, from_wins, from_loss)
 {
     
 }
 // - hockey compare 
-bool Hockey::compare(const Hockey & rhs)
+bool Hockey::compare(const Hockey & rhs) const
 {
         // check hockey saves
     if(saves_per_game() == rhs.saves_per_game())
@@ -178,17 +186,9 @@ bool Hockey::reset()
 // - hockey overload !=
 bool operator != (const Hockey & lhs, const Hockey & rhs)
 {
-    // check hockey saves
-    if(lhs.saves_per_game() != rhs.saves_per_game())
-    {
-        // check goals per game
-        if(lhs.goals_per_game() != rhs.goals_per_game())
-            return true;
-    }
-    // check goals per game
-    if(lhs.goals_per_game() != rhs.goals_per_game())
-        return true;
-    return false;
+    if(lhs.compare(rhs))
+        return false;
+    return true;
 }
 // - hockey input overload
 std::istream & operator >> (std::istream & input, const Hockey & rhs)
@@ -213,6 +213,12 @@ Basketball::Basketball()
     three_fg = 0;
     // - basketball amount of fouls committed
     fouls = 0;
+}
+// - basketball copy constructor
+Basketball::Basketball(const Basketball & rhs) : Sport(rhs.games_played, rhs.wins, rhs.loss),
+field_goals(rhs.field_goals), three_fg(rhs.field_goals), fouls(rhs.fouls)
+{
+
 }
 // - basketball constructor w args
 Basketball::Basketball(const int & num_field_goals, const int & num_three_fg, const int & num_fouls, const int & from_GP, const int & from_wins, const int & from_loss) : 
@@ -307,56 +313,79 @@ std::ostream & operator << (std::ostream & output, const Basketball & rhs)
 Soccer::Soccer()
 {
     // - soccer amount of goals scored
-    goals = 0;
+    total_goals = 0;
     // - soccer average ball possession %
-    avg_possession = 0;
+    total_AP = 0;
     // - soccer amount of shot taken at the goal
-    shots_on_goal = 0;
+    total_SOG = 0;
 }
-// - soccer constructor w args
-Soccer::Soccer(const int & num_goals, const int & num_AP, const int & num_SOG, const int & from_GP, const int & from_wins, const int & from_loss) :
-goals(num_AP), avg_possession(num_AP), shots_on_goal(num_SOG), Sport(from_GP, from_wins, from_loss)
+// - soccer copy constructor
+Soccer::Soccer(const Soccer & rhs) : Sport(rhs.games_played, rhs.wins, rhs.loss),
+total_goals(rhs.total_goals), total_AP(rhs.total_AP), total_SOG(total_SOG)
 {
 
 }
-// - soccer compare
-bool Soccer::compare(const Soccer & aSoccer) const
+// - soccer constructor w args
+Soccer::Soccer(const int & num_goals, const int & num_AP, const int & num_SOG, const int & from_GP, const int & from_wins, const int & from_loss) :
+total_goals(num_goals), total_AP(num_AP), total_SOG(num_SOG), Sport(from_GP, from_wins, from_loss)
 {
+    
+}
+// - soccer compare
+bool Soccer::compare(const Soccer & rhs) const
+{
+    if(total_goals == rhs.total_goals && total_AP == rhs.total_AP && total_SOG == total_SOG)
+    {
+        return true;
+    }
     return false;
 }
 // - soccer display
 bool Soccer::display() const
 {
     Sport::display();
-    std::cout << "Goals: "<< goals << std::endl;
-    std::cout << "Average Possession: " << avg_possesion << std::endl;
-    std::cout << "Shots On Goal: " << shots_on_goal << std::endl;
+    std::cout << "Goals: "<< total_goals << std::endl;
+    std::cout << "Average Goals: " << avg_goals() << std::endl;
+    std::cout << "Average Possession: " << total_AP << " %" << std::endl;
+    std::cout << "Shots On Goal: " << total_SOG << std::endl;
     return false;
 }
 // - soccer add a game
-bool Soccer::add_game(const int & num_goals, const float & num_possession, const int & num_shots)
+bool Soccer::add_game(const int & num_goals, const float & num_AP, const int & num_SOG, const int & WinOrLoss)
 {
+    total_goals += num_goals;
+    total_AP += num_AP;
+    total_SOG += num_SOG;
+    Sport::add_game(WinOrLoss);
     return false;
 }
 // - soccer calculate avg num_goals per game
-int Soccer::avg_goals()
+int Soccer::avg_goals() const
 {
+    if(games_played != 0)
+        return total_goals / games_played;
     return 0;
 }
 // - soccer calculate avg possession %
-float Soccer::avg_possesion()
+float Soccer::avg_possesion() const
 {
+    if(games_played != 0)
+        return total_AP / games_played;
     return 0.00;
 }
 // - soccer calcultate number of shots on goal per game
-int Soccer::shots_per_game()
+int Soccer::shots_per_game() const
 {
+    if(games_played != 0)
+        return total_SOG / games_played;
     return 0;
 }
 // - soccer != overload
 bool operator != (const Soccer & lhs, const Soccer & rhs)
 {
-    return false;
+    if(lhs.compare(rhs))
+        return false;
+    return true;
 }
 // - soccer input overload
 std::istream & operator >> (std::istream & input, const Soccer & rhs) 
