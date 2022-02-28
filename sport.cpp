@@ -216,7 +216,7 @@ Basketball::Basketball()
 }
 // - basketball copy constructor
 Basketball::Basketball(const Basketball & rhs) : Sport(rhs.games_played, rhs.wins, rhs.loss),
-field_goals(rhs.field_goals), three_fg(rhs.field_goals), fouls(rhs.fouls)
+field_goals(rhs.field_goals), three_fg(rhs.three_fg), fouls(rhs.fouls)
 {
 
 }
@@ -243,11 +243,11 @@ bool Basketball::display() const
     // sport display vars
     Sport::display();
     // basketball display vars
-    std::cout << "Points: " << field_goals << std::endl;
-    std::cout << "3 PT: " << three_fg << std::endl;
-    std::cout << "Fouls: " << fouls << std::endl;
+    std::cout << "Total Points: " << field_goals << std::endl;
     std::cout << "Average Points Per Game: " << avg_field_goals() << std::endl;
+    std::cout << "Total 3 PT: " << three_fg << std::endl;
     std::cout << "3 Point %: " << three_fg_percentage() << " %" << std::endl;
+    std::cout << "Total Fouls: " << fouls << std::endl;
     std::cout << "Fouls Per Minutes: " << fouls_per_minute() << std::endl;
     return false;
 } 
@@ -275,7 +275,7 @@ float Basketball::three_fg_percentage() const
 {
     // check for division by 0
     if(field_goals)
-        return static_cast <float> (three_fg);
+        return (static_cast <float> (three_fg) / static_cast<float> (field_goals)) * 100.00;
     return 0;
 }
 // - basketball calulate number of fouls per minute
@@ -315,26 +315,26 @@ Soccer::Soccer()
     // - soccer amount of goals scored
     total_goals = 0;
     // - soccer average ball possession %
-    total_AP = 0;
+    total_corners = 0;
     // - soccer amount of shot taken at the goal
     total_SOG = 0;
 }
 // - soccer copy constructor
 Soccer::Soccer(const Soccer & rhs) : Sport(rhs.games_played, rhs.wins, rhs.loss),
-total_goals(rhs.total_goals), total_AP(rhs.total_AP), total_SOG(total_SOG)
+total_goals(rhs.total_goals), total_corners(rhs.total_corners), total_SOG(rhs.total_SOG)
 {
 
 }
 // - soccer constructor w args
-Soccer::Soccer(const int & num_goals, const int & num_AP, const int & num_SOG, const int & from_GP, const int & from_wins, const int & from_loss) :
-total_goals(num_goals), total_AP(num_AP), total_SOG(num_SOG), Sport(from_GP, from_wins, from_loss)
+Soccer::Soccer(const int & num_goals, const int & num_corners, const int & num_SOG, const int & from_GP, const int & from_wins, const int & from_loss) :
+total_goals(num_goals), total_corners(num_corners), total_SOG(num_SOG), Sport(from_GP, from_wins, from_loss)
 {
-    
+
 }
 // - soccer compare
 bool Soccer::compare(const Soccer & rhs) const
 {
-    if(total_goals == rhs.total_goals && total_AP == rhs.total_AP && total_SOG == total_SOG)
+    if(total_goals == rhs.total_goals && total_corners == rhs.total_corners && total_SOG == total_SOG)
     {
         return true;
     }
@@ -344,17 +344,19 @@ bool Soccer::compare(const Soccer & rhs) const
 bool Soccer::display() const
 {
     Sport::display();
-    std::cout << "Goals: "<< total_goals << std::endl;
+    std::cout << "Total Goals: "<< total_goals << std::endl;
     std::cout << "Average Goals: " << avg_goals() << std::endl;
-    std::cout << "Average Possession: " << total_AP << " %" << std::endl;
-    std::cout << "Shots On Goal: " << total_SOG << std::endl;
+    std::cout << "Total Corners: " << total_corners << std::endl;
+    std::cout << "Average Corners: " << avg_corners() << std::endl;
+    std::cout << "Total Shots On Goal: " << total_SOG << std::endl;
+    std::cout << "Shots On Goal Per Game: " << shots_per_game() << std::endl;
     return false;
 }
 // - soccer add a game
-bool Soccer::add_game(const int & num_goals, const float & num_AP, const int & num_SOG, const int & WinOrLoss)
+bool Soccer::add_game(const int & num_goals, const float & num_corners, const int & num_SOG, const int & WinOrLoss)
 {
     total_goals += num_goals;
-    total_AP += num_AP;
+    total_corners += num_corners;
     total_SOG += num_SOG;
     Sport::add_game(WinOrLoss);
     return false;
@@ -367,10 +369,10 @@ int Soccer::avg_goals() const
     return 0;
 }
 // - soccer calculate avg possession %
-float Soccer::avg_possesion() const
+float Soccer::avg_corners() const
 {
     if(games_played != 0)
-        return total_AP / games_played;
+        return total_corners / games_played;
     return 0.00;
 }
 // - soccer calcultate number of shots on goal per game

@@ -3,16 +3,25 @@
 // The athlete class will have a derived class in each object depending on what sport the athelete
 // specializes in. The athlete class will be stored in a binary tree, vector, or array data structure.
 #include <iostream>
-#include <string>
 #include "sport.h"
+#include <string>
 #include <cstring>
+#include <vector>
 class Athlete
 {
 	public:
 		// constructor
 		Athlete();
+		// constructor w args
+		Athlete(const char * rhs_name, const std::string * rhs_country, const int & rhs_ranking);
 		// copy constuctor
 		Athlete(const Athlete & rhs);
+		// insert hockey obj
+		bool insert(const Hockey & rhs);
+		// insert basketball obj
+		bool insert(const Basketball & rhs);
+		// insert soccer obj
+		bool insert(const Soccer & rhs);
 		// destructor
 		~Athlete();
 		// copy
@@ -21,7 +30,7 @@ class Athlete
 		bool compare(const Athlete & rhs) const;
 		// display
 		bool display() const;
-		// get sport data type
+		// get sport data type 
 		int sport_type() const;
 		// = overload
 		bool operator = (const Athlete & rhs);
@@ -40,7 +49,6 @@ class Athlete
 		Hockey * hockey_data;
 		Soccer * soccer_data;
 		Basketball * basketball_data;
-		// Sport * Data; <- Could be easier to use
 };
 
 class Node : public Athlete
@@ -56,12 +64,18 @@ class Node : public Athlete
 		Node * go_left() const;
 		// go to right node
 		Node * go_right() const;
+		// link left node;
+		bool link_left(const Node & rhs);
+		// link right node;
+		bool link_right(const Node & rhs);
+		// insert athlete 
+		bool insert(const Athlete & rhs);
 		// display
 		bool display() const;
 		// empty
 		bool empty() const;
 		// + operator
-		bool operator + (Node * rhs);
+		friend Node & operator + (Node & lhs, const Athlete & rhs);
 		// input overload
 		friend std::istream & operator >> (std::istream & input, Node & rhs);
 		// output overload
@@ -75,7 +89,7 @@ class BinaryTree
 {
 	public:
 		BinaryTree();
-		BinaryTree(const BinaryTree & aBinaryTree);
+		BinaryTree(const BinaryTree & rhs);
 		~BinaryTree();
 		bool display() const;
 		bool search() const;
@@ -89,4 +103,14 @@ class BinaryTree
 		friend std::ostream & operator << (std::ostream & output, const BinaryTree & rhs);
 	private:
 		Node * root;
+};
+
+class List
+{
+	public:
+	private:
+		Hockey * Hockey_Event[5];
+		std::vector<Basketball *> Basketball_Event;
+		Soccer * BinaryTree;
+
 };
