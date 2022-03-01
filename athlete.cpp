@@ -336,6 +336,8 @@ bool BinaryTree::remove() const
 bool BinaryTree::operator +=(const Node & rhs)
 {
     this->insert(rhs);
+    if(root)
+        return true;
     return false;
 }
 // - binarytree input overload
@@ -372,8 +374,7 @@ Node * BinaryTree::insert(Node * curr, const Node & rhs)
     {
         if(curr->go_left() == nullptr)
         {
-            Node * temp = insert(curr->go_left(), rhs);
-            curr->link_left(temp);
+            curr->link_left(insert(curr->go_left(), rhs));
         }
         else
             insert(curr->go_left(), rhs);
@@ -382,8 +383,7 @@ Node * BinaryTree::insert(Node * curr, const Node & rhs)
     {
         if(curr->go_right() == nullptr)
         {
-            Node * temp = insert(curr->go_right(), rhs);
-            curr->link_right(temp);
+            curr->link_right(insert(curr->go_right(), rhs));
         }
         else
             insert(curr->go_right(), rhs);
