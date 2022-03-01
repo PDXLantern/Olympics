@@ -23,7 +23,7 @@ int main()
     char * test_char3 = new char [strlen("Canada National Team")+1];
     strcpy(test_char3,"Canada");
     std::string * test_string3 = new std::string("United States of America");
-    Athlete test_athlete3(test_char3, test_string3, 3);
+    Athlete test_athlete3(test_char3, test_string3, 6);
     test_athlete3.insert(test_sport3);
     Node test_node3;
     test_node3 = test_node3 + test_athlete3;
@@ -39,7 +39,7 @@ int main()
     test_tree.insert(test_node2);
     test_tree.insert(test_node3);
     
-    //std::cout << test_tree << std::endl;
+    std::cout << test_tree << std::endl;
     
     delete [] test_char;
     delete test_string;

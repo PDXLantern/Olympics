@@ -353,7 +353,12 @@ std::ostream & operator << (std::ostream & output, const BinaryTree & rhs)
 // - binarytree display
 bool BinaryTree::display (const Node * curr) const
 {
+    if(curr->go_left())
+        display(curr->go_left());
+    if(curr->go_right())
+        display(curr->go_right());
     curr->display();
+    std::cout << std::endl;
     return true;
 }
 Node * BinaryTree::insert(Node * curr, const Node & rhs)
@@ -363,15 +368,25 @@ Node * BinaryTree::insert(Node * curr, const Node & rhs)
         curr = new Node(rhs);
         return curr;
     }
-    else if(*curr > rhs)
+    if(*curr > rhs)
     {
-        Node * temp = insert(curr->go_left(), rhs);
-        curr->link_left(temp);
+        if(curr->go_left() == nullptr)
+        {
+            Node * temp = insert(curr->go_left(), rhs);
+            curr->link_left(temp);
+        }
+        else
+            insert(curr->go_left(), rhs);
     }
     else
     {
-        Node * temp = insert(curr->go_right(), rhs);
-        curr->link_right(temp);
+        if(curr->go_right() == nullptr)
+        {
+            Node * temp = insert(curr->go_right(), rhs);
+            curr->link_right(temp);
+        }
+        else
+            insert(curr->go_right(), rhs);
     }
     return curr;
 }
