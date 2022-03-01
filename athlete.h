@@ -38,6 +38,8 @@ class Athlete
 		friend std::istream & operator >> (std::istream & input, Athlete & rhs);
 		// output overload
 		friend std::ostream & operator << (std::ostream & output, const Athlete & rhs);
+		// > overload
+		//friend bool operator > (const Athlete)
 	protected:
 		// athlete details
 		char * name;
@@ -65,9 +67,9 @@ class Node : public Athlete
 		// go to right node
 		Node * go_right() const;
 		// link left node;
-		bool link_left(const Node & rhs);
+		bool link_left(Node * rhs);
 		// link right node;
-		bool link_right(const Node & rhs);
+		bool link_right(Node * rhs);
 		// insert athlete 
 		bool insert(const Athlete & rhs);
 		// display
@@ -80,6 +82,8 @@ class Node : public Athlete
 		friend std::istream & operator >> (std::istream & input, Node & rhs);
 		// output overload
 		friend std::ostream & operator << (std::ostream & output, const Node & rhs);
+		// > operator
+		friend bool operator >(const Node & lhs, const Node & rhs);
 	protected:
 		Node * left;
 		Node * right;
@@ -93,15 +97,18 @@ class BinaryTree
 		~BinaryTree();
 		bool display() const;
 		bool search() const;
-		bool insert() const;
+		bool insert(const Node & rhs);
 		bool remove() const;
 		// add an athlete to data structure
-		bool operator +=(const BinaryTree & rhs);
+		bool operator +=(const Node & rhs);
 		// input overload
 		friend std::istream & operator >> (std::istream & input, BinaryTree & rhs);
 		// output overload
 		friend std::ostream & operator << (std::ostream & output, const BinaryTree & rhs);
 	private:
+		bool display (const Node * curr) const;
+		Node * insert(Node * curr, const Node & rhs);
+		bool remove_nodes(Node * curr);
 		Node * root;
 };
 

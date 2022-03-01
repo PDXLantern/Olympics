@@ -219,49 +219,33 @@ Node::Node(const Node & rhs) : Athlete(rhs.name, rhs.country, rhs.ranking)
 // - node destructor
 Node::~Node()
 {
-    if(left)
-        delete left;
-
-    if(right)
-        delete right;
+    
 }
 // - node go left
 Node * Node::go_left() const
 {
-    if(left)
-        return left;
-    return nullptr;
+    return left;
 }
 // - node go right
 Node * Node::go_right() const
 {
-    if(right)
-        return right;
-    return nullptr;
+    return right;
 }
 // node - link left node;
-bool Node::link_left(const Node & rhs)
+bool Node::link_left(Node * rhs)
 {
-    if(this != &rhs)
-    {
-        if(this->left)
-            delete this->left;
-        this->left = new Node(rhs);
-        return true;
-    }
-    return false;
+    if(left)
+        delete this->left;
+    left = rhs;
+    return true;
 }
 // node - link right node;
-bool Node::link_right(const Node & rhs)
+bool Node::link_right(Node * rhs)
 {
-    if(this != &rhs)
-    {
-        if(this->right)
-            delete this->right;
-        this->right = new Node(rhs);
-        return true;
-    }
-    return false;
+    if(right)
+        delete this->right;
+    right = rhs;
+    return true;
 }
 // node - insert athlete 
 bool Node::insert(const Athlete & rhs)
@@ -301,6 +285,13 @@ std::ostream & operator << (std::ostream & output, const Node & rhs)
     rhs.display();
     return output;
 }
+// - node > operator
+bool operator >(const Node & lhs, const Node & rhs)
+{
+    if(lhs.ranking > rhs.ranking)
+        return true;
+    return false;   
+}
 
 // binarytree class
 // - binarytree public functions
@@ -318,11 +309,12 @@ BinaryTree::BinaryTree(const BinaryTree & rhs)
 // - binarytree destructor
 BinaryTree::~BinaryTree()
 {
-    
+    remove_nodes(root);
 }
 // - binarytree display
 bool BinaryTree::display() const
 {
+    this->display(root);
     return false;
 }
 // - binarytree search
@@ -331,9 +323,9 @@ bool BinaryTree::search() const
     return false;
 }
 // - binarytree insert
-bool BinaryTree::insert() const
+bool BinaryTree::insert(const Node & rhs)
 {
-    return false;
+    return root = insert(root, rhs);
 }
 // - binarytree remove
 bool BinaryTree::remove() const
@@ -341,8 +333,9 @@ bool BinaryTree::remove() const
     return false;
 }
 // - binarytree add an athlete to data structure
-bool BinaryTree::operator +=(const BinaryTree & rhs)
+bool BinaryTree::operator +=(const Node & rhs)
 {
+    this->insert(rhs);
     return false;
 }
 // - binarytree input overload
@@ -353,5 +346,42 @@ std::istream & operator >> (std::istream & input, BinaryTree & rhs)
 // - binarytreeoutput overload
 std::ostream & operator << (std::ostream & output, const BinaryTree & rhs)
 {
+    rhs.display();
     return output;
+}
+// binary class private
+// - binarytree display
+bool BinaryTree::display (const Node * curr) const
+{
+    curr->display();
+    return true;
+}
+Node * BinaryTree::insert(Node * curr, const Node & rhs)
+{
+    if(curr == nullptr)
+    {
+        curr = new Node(rhs);
+        return curr;
+    }
+    else if(*curr > rhs)
+    {
+        Node * temp = insert(curr->go_left(), rhs);
+        curr->link_left(temp);
+    }
+    else
+    {
+        Node * temp = insert(curr->go_right(), rhs);
+        curr->link_right(temp);
+    }
+    return curr;
+}
+bool BinaryTree::remove_nodes(Node * curr)
+{
+    if(curr->go_left() != nullptr)
+        remove_nodes(curr->go_left());
+    if(curr->go_right() != nullptr)
+        remove_nodes(curr->go_right());
+    if(curr)
+        delete curr;
+    return true;
 }
