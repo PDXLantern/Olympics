@@ -156,7 +156,7 @@ bool Athlete::display() const
         std::cout << "No Sport Data" << std::endl;
     return false;
 }
-// - athlete data type
+// - athlete sport data type
 int Athlete::sport_type() const
 {
     if(hockey_data)
@@ -165,6 +165,14 @@ int Athlete::sport_type() const
         return 2;
     if(soccer_data)
         return 3;
+    return 0;
+}
+int Athlete::key() const
+{
+    if(ranking != 0)
+    {
+        return ranking;
+    }
     return 0;
 }
 // - athlete = overload
@@ -224,26 +232,36 @@ Node::~Node()
 // - node go left
 Node * Node::go_left() const
 {
-    return left;
+    if(left)
+        return left;
+    return nullptr;
 }
 // - node go right
 Node * Node::go_right() const
 {
-    return right;
+    if(right)
+        return right;
+    return nullptr;
 }
 // node - link left node;
 bool Node::link_left(Node * rhs)
 {
-    if(left)
-        delete this->left;
+    if(rhs == nullptr)
+    {
+        left = nullptr;
+        return false;
+    }
     left = rhs;
     return true;
 }
 // node - link right node;
 bool Node::link_right(Node * rhs)
 {
-    if(right)
-        delete this->right;
+    if(rhs == nullptr)
+    {
+        right = nullptr;
+        return false;
+    }
     right = rhs;
     return true;
 }
@@ -302,9 +320,9 @@ BinaryTree::BinaryTree()
     root = nullptr;
 }
 // - binarytree copy contructor
-BinaryTree::BinaryTree(const BinaryTree & rhs)
+BinaryTree::BinaryTree(const BinaryTree & rhs) : BinaryTree()
 {
-    
+    root = copy_nodes(root, rhs.root);
 }
 // - binarytree destructor
 BinaryTree::~BinaryTree()
@@ -318,9 +336,9 @@ bool BinaryTree::display() const
     return false;
 }
 // - binarytree search
-bool BinaryTree::search() const
+bool BinaryTree::search(const int & rhs_key) const
 {
-    return false;
+    return search(root, rhs_key);
 }
 // - binarytree insert
 bool BinaryTree::insert(const Node & rhs)
@@ -328,8 +346,13 @@ bool BinaryTree::insert(const Node & rhs)
     return root = insert(root, rhs);
 }
 // - binarytree remove
-bool BinaryTree::remove() const
+bool BinaryTree::remove(const int & rhs_key)
 {
+    if(root)
+    {
+        root = remove(root, rhs_key);
+        return true;
+    }
     return false;
 }
 // - binarytree add an athlete to data structure
@@ -352,15 +375,38 @@ std::ostream & operator << (std::ostream & output, const BinaryTree & rhs)
     return output;
 }
 // binary class private
+// - binary copy nodes
+Node * BinaryTree::copy_nodes(Node * curr, const Node * rhs)
+{
+    if(rhs == nullptr)
+    {
+        return curr;
+    }
+    if(rhs)
+    {
+        curr = new Node(*rhs);
+    }
+    if(rhs->go_left())
+    {
+        Node * Temp = copy_nodes(curr->go_left(), rhs->go_left());
+        curr->link_left(Temp);
+    }
+    if(rhs->go_right())
+    {
+        Node * Temp2 = copy_nodes(curr->go_right(), rhs->go_right());
+        curr->link_right(Temp2);
+    }
+    return curr;
+}
 // - binarytree display
-bool BinaryTree::display (const Node * curr) const
+bool BinaryTree::display(const Node * curr) const
 {
     if(curr->go_left())
         display(curr->go_left());
-    if(curr->go_right())
-        display(curr->go_right());
     curr->display();
     std::cout << std::endl;
+    if(curr->go_right())
+        display(curr->go_right());
     return true;
 }
 Node * BinaryTree::insert(Node * curr, const Node & rhs)
@@ -390,6 +436,69 @@ Node * BinaryTree::insert(Node * curr, const Node & rhs)
     }
     return curr;
 }
+Node * BinaryTree::remove(Node * curr, const int & rhs_key)
+{
+    if(!curr)
+    {
+        std::cout << "No Match Found" << std::endl;
+        return curr;
+    }
+    if(curr->key() > rhs_key)
+    {
+        curr->link_left(remove(curr->go_left(), rhs_key));
+    }
+    if (curr->key() < rhs_key)
+    {
+        curr->link_right(remove(curr->go_right(), rhs_key));
+    }
+    if (curr->key() == rhs_key)
+    {
+        std::cout << "Match Found" << std::endl;
+        
+        if(curr->go_left() == nullptr && curr->go_right() == nullptr)
+        {
+            std::cout << "Node has no children" << std::endl;
+            delete curr;
+            return NULL;
+        }
+        if(curr->go_left() && curr->go_right())
+        {
+            std::cout << "Node has both children" << std::endl;
+            std::cout << "Next Node" << std::endl;
+            Node * del = nextInOrder(curr->go_right());
+            Node * Temp = new Node(*del);
+            delete del;
+            Temp->link_left(curr->go_left());
+            delete curr;
+            return Temp; 
+        }
+        if(curr->go_left() == nullptr && curr->go_right())
+        {
+            std::cout << "Node has no left child" << std::endl;
+            Node * del = curr->go_right();
+            Node * Temp = new Node(*del);
+            delete del;
+            delete curr;
+            return Temp;
+        }
+        if(curr->go_right() == nullptr && curr->go_left())
+        {
+            std::cout << "Node has no right child" << std::endl;
+            Node * del = curr->go_left();
+            Node * Temp = new Node(*del);
+            delete del;
+            delete curr;
+            return Temp;
+        }
+    }  
+    return curr;
+}
+Node * BinaryTree::nextInOrder(Node * curr)
+{
+    if(curr->go_left() == nullptr)
+        return curr;
+    return nextInOrder(curr->go_left());
+}
 bool BinaryTree::remove_nodes(Node * curr)
 {
     if(curr->go_left() != nullptr)
@@ -399,4 +508,24 @@ bool BinaryTree::remove_nodes(Node * curr)
     if(curr)
         delete curr;
     return true;
+}
+bool BinaryTree::search(const Node * curr, const int & rhs_key) const
+{
+    if(!curr)
+        return false;
+    if(curr->key() > rhs_key)
+    {
+        search(curr->go_left(), rhs_key);
+    }
+    if(curr->key() < rhs_key)
+    {
+        search(curr->go_right(), rhs_key);
+    }
+    if(curr->key() == rhs_key)
+    {
+        std::cout << "Match Found" << std::endl;
+        curr->display();
+        return true;
+    }
+    return false;
 }

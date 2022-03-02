@@ -28,18 +28,29 @@ int main()
     Node test_node3;
     test_node3 = test_node3 + test_athlete3;
     
-    if(test_node > test_node2)
-        std::cout << "Success" << std::endl;
-
-    Node * test_node4;
-    test_node.link_left(test_node4);
+    Basketball test_sport4 (100, 100, 22, 10, 1, 9);
+    char * test_char4 = new char [strlen("Mexico National Team")+1];
+    strcpy(test_char4,"Mexico");
+    std::string * test_string4 = new std::string("United States of America");
+    Athlete test_athlete4(test_char4, test_string4, 3);
+    test_athlete4.insert(test_sport4);
+    Node test_node4;
+    test_node4 = test_node4 + test_athlete4;
+    
 
     BinaryTree test_tree;
     test_tree.insert(test_node);
     test_tree.insert(test_node2);
     test_tree.insert(test_node3);
+    test_tree.insert(test_node4);
+
+    //test_tree.remove(4);
+    //test_tree.search(4);
     
-    std::cout << test_tree << std::endl;
+    // std::cout << test_tree << std::endl;
+
+    BinaryTree test_tree2(test_tree);
+    std::cout << test_tree2 << std::endl;
     
     delete [] test_char;
     delete test_string;
@@ -47,5 +58,7 @@ int main()
     delete test_string2;
     delete [] test_char3;
     delete test_string3;
+    delete [] test_char4;
+    delete test_string4;
     return 0;
 }

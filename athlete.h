@@ -32,6 +32,8 @@ class Athlete
 		bool display() const;
 		// get sport data type 
 		int sport_type() const;
+		// get key
+		int key() const;
 		// = overload
 		bool operator = (const Athlete & rhs);
 		// input overload
@@ -96,19 +98,23 @@ class BinaryTree
 		BinaryTree(const BinaryTree & rhs);
 		~BinaryTree();
 		bool display() const;
-		bool search() const;
+		bool search(const int & rhs_key) const;
 		bool insert(const Node & rhs);
-		bool remove() const;
+		bool remove(const int & rhs_key);
 		// add an athlete to data structure
 		bool operator +=(const Node & rhs);
 		// input overload
 		friend std::istream & operator >> (std::istream & input, BinaryTree & rhs);
 		// output overload
 		friend std::ostream & operator << (std::ostream & output, const BinaryTree & rhs);
-	private:
+	protected:
+		Node * copy_nodes(Node * curr, const Node * rhs);
 		bool display (const Node * curr) const;
 		Node * insert(Node * curr, const Node & rhs);
+		Node * remove(Node * curr, const int & rhs_key);
+		Node * nextInOrder(Node * curr);
 		bool remove_nodes(Node * curr);
+		bool search(const Node * curr, const int & rhs_key) const;
 		Node * root;
 };
 
