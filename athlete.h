@@ -121,9 +121,23 @@ class BinaryTree
 class List
 {
 	public:
+		List();
+		List(const List & rhs);
+		~List();
+		bool load_file();
+		bool read_file(std::fstream & data_file, int count);
+		bool search();
+		bool remove();
+		bool insert();
+		bool display() const;
+		friend std::ostream & operator << (std::ostream & output, const List & rhs);
 	private:
-		Hockey * Hockey_Event[5];
-		std::vector<Basketball *> Basketball_Event;
-		Soccer * BinaryTree;
-
+		bool create_nodes(Node **& curr, int index, const Node & rhs);
+		bool remove_array(Node **& curr, int index);
+		bool display_array(Node ** curr, int index) const;
+		Node ** Hockey_Event;
+		std::vector<Node *> Basketball_Event;
+		BinaryTree * Soccer_Event;
+		int size;
+		int max_char = 100;
 };

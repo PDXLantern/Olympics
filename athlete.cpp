@@ -1,4 +1,5 @@
 #include "athlete.h"
+#include <fstream>
 // athlete class
 // - athlete public functions
 // - athlete constructor
@@ -528,4 +529,143 @@ bool BinaryTree::search(const Node * curr, const int & rhs_key) const
         return true;
     }
     return false;
+}
+
+List::List()
+{
+    Hockey_Event = nullptr;
+    Soccer_Event = nullptr;
+    size = 5;
+    load_file();
+}
+List::List(const List & rhs)
+{
+
+}
+List::~List()
+{
+    if(Hockey_Event)
+	{
+		remove_array(Hockey_Event, 0);
+		delete [] Hockey_Event;
+	}
+}
+bool List::load_file()
+{
+    // initiliaze array
+    Hockey_Event = new Node *[size];
+    //if(!create_nodes(Hockey_Event, 0))
+        //return false;
+    std::fstream data_file;
+    data_file.open("data.txt");
+    read_file(data_file, 0);
+    data_file.close();
+    return true;
+}
+bool List::read_file(std::fstream & data_file, int count)
+{
+    if(data_file.eof())
+        return true;
+
+    char temp_name[max_char];
+    char temp_country[max_char];
+    int temp_rank;
+    int temp_saves;
+    int temp_penalties;
+    int temp_goals;
+    int games_played;
+    int wins;
+    int loss;
+
+    data_file.get(temp_name, max_char, ';');
+    data_file.ignore(2);
+    data_file.get(temp_country, max_char, ';');
+    data_file.ignore(2);
+    data_file >> temp_rank;
+    data_file.ignore(2);
+    data_file >> temp_saves;
+    data_file.ignore(2);
+    data_file >> temp_penalties;
+    data_file.ignore(2);
+    data_file >> temp_goals;
+    data_file.ignore(2);
+    data_file >> games_played;
+    data_file.ignore(2);
+    data_file >> wins;
+    data_file.ignore(2);
+    data_file >> loss;
+    data_file.ignore(2);
+
+    char * nameptr = new char [strlen(temp_name)+1];
+    strcpy(nameptr, temp_name);
+
+    std::string * countryptr = new std::string(temp_country);
+    
+    Hockey test_sport (temp_saves, temp_penalties, temp_goals, games_played, wins, loss);
+    std::cout << nameptr << std::endl;
+    std::cout << *countryptr << std::endl;
+    std::cout << test_sport << std::endl;
+
+    Athlete temp_athlete(nameptr, countryptr, temp_rank);
+    temp_athlete.insert(test_sport);
+    Node temp_node;
+    temp_node.insert(temp_athlete);
+    create_nodes(Hockey_Event, count, temp_node);
+
+    delete [] nameptr;
+    delete countryptr;
+    return read_file(data_file, ++count);
+}
+bool List::display() const
+{
+    if(Hockey_Event)
+        display_array(Hockey_Event, 0);
+    //if(Basketball_Event)
+        // display basketball event
+    if(Soccer_Event)
+        Soccer_Event->display();
+        // display soccer event
+    return true;
+}
+std::ostream & operator << (std::ostream & output, const List & rhs)
+{
+    rhs.display();
+    return output;
+}
+
+bool List::create_nodes(Node **& curr, int index, const Node & rhs)
+{
+    if(index == size)
+    {
+        return false;
+    }
+    curr[index] = new Node(rhs);
+    return true;
+}
+bool List::remove_array(Node **& curr, int index)
+{
+    if(index == size)
+	{
+		return true;
+	}
+	// delete current
+	if(curr[index])
+	{
+		// delete nodes in linked list
+		delete curr[index];
+	}
+	// Go to next index
+	return remove_array(curr, ++index);
+}
+bool List::display_array(Node ** curr, int index) const
+{
+    if(index == size)
+    {
+        return true;
+    }
+    if(curr[index])
+    {
+        curr[index]->display();
+    }
+    return display_array(curr, ++index);
 }

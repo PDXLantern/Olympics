@@ -1,0 +1,5 @@
+Finland Men's National Ice Hockey Team; Finland; 1; 154; 57; 22; 6; 6; 0;
+Russia Men's National Ice Hockey Team; Russia; 2; 176; 63; 14; 6; 5; 1;
+Slovakia Men's National Ice Hockey Team; Slovakia; 3; 230; 50; 19; 7; 4; 3;
+Sweden Men's National Ice Hockey Team; Sweden; 4; 161; 44; 13; 6; 3; 3;
+United States National Men's Ice Hockey Team; United States; 5; 132; 30; 17; 4; 3; 1;
