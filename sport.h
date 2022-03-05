@@ -128,19 +128,19 @@ class Soccer : public Sport
 		// soccer copy contructor
 		Soccer(const Soccer & rhs);
 		// soccer constructor w args
-		Soccer(const int & num_goals, const int & num_corners, const int & num_SOG, const int & from_GP, const int & from_wins, const int & from_loss);
+		Soccer(const int & num_goals, const int & num_GA, const int & num_GD, const int & from_GP, const int & from_wins, const int & from_loss);
 		// soccer compare
 		bool compare(const Soccer & rhs) const;
 		// soccer display
 		bool display() const;
 		// soccer add a game
-		bool add_game(const int & num_goals, const float & num_corners, const int & num_SOG, const int & WinOrLoss);
+		bool add_game(const int & num_goals, const float & num_GA, const int & num_GD, const int & WinOrLoss);
 		// calculate avg num_goals per game
 		int avg_goals() const;
-		// calculate avg corners 
-		float avg_corners() const;
-		// calcultate number of shots on goal per game
-		int shots_per_game() const;
+		// calculate avg goals against
+		float avg_GA() const;
+		// calcultate goal difference
+		int avg_GD() const;
 		// != overload
 		friend bool operator != (const Soccer & lhs, const Soccer & rhs);
 		// input overload
@@ -151,9 +151,9 @@ class Soccer : public Sport
 		// amount of goals scored
 		int total_goals;
 		// total corners taken
-		float total_corners;
+		float total_GA;
 		// amount of shot taken at the goal
-		int total_SOG;
+		int total_GD;
 };
 
 

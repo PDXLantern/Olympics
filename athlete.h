@@ -125,16 +125,24 @@ class List
 		List(const List & rhs);
 		~List();
 		bool load_file();
-		bool read_file(std::fstream & data_file, int count);
-		bool search();
-		bool remove();
-		bool insert();
+		bool read_hockey_event(std::fstream & data_file, int count);
+		bool read_basketball_event(std::fstream & data_file);
+		bool read_soccer_event(std::fstream & data_file, int count);
+		bool search(const int & rank);
 		bool display() const;
+		bool display_hockey() const;
+		bool display_basketball() const;
+		bool display_soccer() const;
 		friend std::ostream & operator << (std::ostream & output, const List & rhs);
 	private:
 		bool create_nodes(Node **& curr, int index, const Node & rhs);
 		bool remove_array(Node **& curr, int index);
+		bool create_vector(const Node & rhs);
+		bool remove_vector();
+		bool create_BT(const Node & curr);
+		
 		bool display_array(Node ** curr, int index) const;
+		bool display_vector() const;
 		Node ** Hockey_Event;
 		std::vector<Node *> Basketball_Event;
 		BinaryTree * Soccer_Event;

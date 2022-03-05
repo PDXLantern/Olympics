@@ -315,26 +315,26 @@ Soccer::Soccer()
     // - soccer amount of goals scored
     total_goals = 0;
     // - soccer average ball possession %
-    total_corners = 0;
+    total_GA = 0;
     // - soccer amount of shot taken at the goal
-    total_SOG = 0;
+    total_GD = 0;
 }
 // - soccer copy constructor
 Soccer::Soccer(const Soccer & rhs) : Sport(rhs.games_played, rhs.wins, rhs.loss),
-total_goals(rhs.total_goals), total_corners(rhs.total_corners), total_SOG(rhs.total_SOG)
+total_goals(rhs.total_goals), total_GA(rhs.total_GA), total_GD(rhs.total_GD)
 {
 
 }
 // - soccer constructor w args
 Soccer::Soccer(const int & num_goals, const int & num_corners, const int & num_SOG, const int & from_GP, const int & from_wins, const int & from_loss) :
-total_goals(num_goals), total_corners(num_corners), total_SOG(num_SOG), Sport(from_GP, from_wins, from_loss)
+total_goals(num_goals), total_GA(num_corners), total_GD(num_SOG), Sport(from_GP, from_wins, from_loss)
 {
 
 }
 // - soccer compare
 bool Soccer::compare(const Soccer & rhs) const
 {
-    if(total_goals == rhs.total_goals && total_corners == rhs.total_corners && total_SOG == total_SOG)
+    if(total_goals == rhs.total_goals && total_GA == rhs.total_GA && total_GD == total_GD)
     {
         return true;
     }
@@ -346,18 +346,18 @@ bool Soccer::display() const
     Sport::display();
     std::cout << "Total Goals: "<< total_goals << std::endl;
     std::cout << "Average Goals: " << avg_goals() << std::endl;
-    std::cout << "Total Corners: " << total_corners << std::endl;
-    std::cout << "Average Corners: " << avg_corners() << std::endl;
-    std::cout << "Total Shots On Goal: " << total_SOG << std::endl;
-    std::cout << "Shots On Goal Per Game: " << shots_per_game() << std::endl;
+    std::cout << "Total Goal Against: " << total_GA << std::endl;
+    std::cout << "Average Goals Against: " << avg_GA() << std::endl;
+    std::cout << "Total Goal Difference: " << total_GD << std::endl;
+    std::cout << "Goal Difference Per Game: " << avg_GD() << std::endl;
     return false;
 }
 // - soccer add a game
 bool Soccer::add_game(const int & num_goals, const float & num_corners, const int & num_SOG, const int & WinOrLoss)
 {
     total_goals += num_goals;
-    total_corners += num_corners;
-    total_SOG += num_SOG;
+    total_GA += num_corners;
+    total_GD += num_SOG;
     Sport::add_game(WinOrLoss);
     return false;
 }
@@ -368,18 +368,18 @@ int Soccer::avg_goals() const
         return total_goals / games_played;
     return 0;
 }
-// - soccer calculate avg possession %
-float Soccer::avg_corners() const
+// - soccer calculate goals against
+float Soccer::avg_GA() const
 {
     if(games_played != 0)
-        return total_corners / games_played;
+        return total_GA / games_played;
     return 0.00;
 }
-// - soccer calcultate number of shots on goal per game
-int Soccer::shots_per_game() const
+// - soccer calcultate goal diference per game
+int Soccer::avg_GD() const
 {
     if(games_played != 0)
-        return total_SOG / games_played;
+        return total_GD / games_played;
     return 0;
 }
 // - soccer != overload

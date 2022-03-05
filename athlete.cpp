@@ -524,7 +524,6 @@ bool BinaryTree::search(const Node * curr, const int & rhs_key) const
     }
     if(curr->key() == rhs_key)
     {
-        std::cout << "Match Found" << std::endl;
         curr->display();
         return true;
     }
@@ -549,20 +548,40 @@ List::~List()
 		remove_array(Hockey_Event, 0);
 		delete [] Hockey_Event;
 	}
+    remove_vector();
+    if(Soccer_Event)
+    {
+        delete Soccer_Event;
+    }
 }
 bool List::load_file()
 {
+    // hockey event
     // initiliaze array
     Hockey_Event = new Node *[size];
     //if(!create_nodes(Hockey_Event, 0))
         //return false;
     std::fstream data_file;
-    data_file.open("data.txt");
-    read_file(data_file, 0);
+    data_file.open("hockey.txt");
+    read_hockey_event(data_file, 0);
     data_file.close();
+
+    // basketball event
+    std::fstream basketball_file;
+    basketball_file.open("basketball.txt");
+    read_basketball_event(basketball_file);
+    basketball_file.close();
+
+    // soccer event
+    Soccer_Event = new BinaryTree();
+    std::fstream data_file2;
+    data_file2.open("soccer.txt");
+    read_soccer_event(data_file2, 0);
+    data_file2.close();
+
     return true;
 }
-bool List::read_file(std::fstream & data_file, int count)
+bool List::read_hockey_event(std::fstream & data_file, int count)
 {
     if(data_file.eof())
         return true;
@@ -602,9 +621,6 @@ bool List::read_file(std::fstream & data_file, int count)
     std::string * countryptr = new std::string(temp_country);
     
     Hockey test_sport (temp_saves, temp_penalties, temp_goals, games_played, wins, loss);
-    std::cout << nameptr << std::endl;
-    std::cout << *countryptr << std::endl;
-    std::cout << test_sport << std::endl;
 
     Athlete temp_athlete(nameptr, countryptr, temp_rank);
     temp_athlete.insert(test_sport);
@@ -614,18 +630,163 @@ bool List::read_file(std::fstream & data_file, int count)
 
     delete [] nameptr;
     delete countryptr;
-    return read_file(data_file, ++count);
+    return read_hockey_event(data_file, ++count);
 }
+bool List::read_basketball_event(std::fstream & data_file)
+{
+    if(data_file.eof())
+        return true;
+
+    char temp_name[max_char];
+    char temp_country[max_char];
+    int temp_rank;
+    int temp_FG;
+    int temp_3FG;
+    int temp_fouls;
+    int games_played;
+    int wins;
+    int loss;
+
+    data_file.get(temp_name, max_char, ';');
+    data_file.ignore(2);
+    data_file.get(temp_country, max_char, ';');
+    data_file.ignore(2);
+    data_file >> temp_rank;
+    data_file.ignore(2);
+    data_file >> temp_FG;
+    data_file.ignore(2);
+    data_file >> temp_3FG;
+    data_file.ignore(2);
+    data_file >> temp_fouls;
+    data_file.ignore(2);
+    data_file >> games_played;
+    data_file.ignore(2);
+    data_file >> wins;
+    data_file.ignore(2);
+    data_file >> loss;
+    data_file.ignore(2);
+
+    char * nameptr = new char [strlen(temp_name)+1];
+    strcpy(nameptr, temp_name);
+
+    std::string * countryptr = new std::string(temp_country);
+    
+    Basketball test_sport (temp_FG, temp_3FG, temp_fouls, games_played, wins, loss);
+
+    Athlete temp_athlete(nameptr, countryptr, temp_rank);
+    temp_athlete.insert(test_sport);
+    Node temp_node;
+    temp_node.insert(temp_athlete);
+
+    create_vector(temp_node);
+
+    delete [] nameptr;
+    delete countryptr;
+    return read_basketball_event(data_file);
+}
+bool List::read_soccer_event(std::fstream & data_file, int count)
+{
+    if(data_file.eof())
+        return true;
+
+    char temp_name[max_char];
+    char temp_country[max_char];
+    int temp_rank;
+    int temp_goals;
+    int temp_GA;
+    int temp_GD;
+    int games_played;
+    int wins;
+    int loss;
+
+    data_file.get(temp_name, max_char, ';');
+    data_file.ignore(2);
+    data_file.get(temp_country, max_char, ';');
+    data_file.ignore(2);
+    data_file >> temp_rank;
+    data_file.ignore(2);
+    data_file >> temp_goals;
+    data_file.ignore(2);
+    data_file >> temp_GA;
+    data_file.ignore(2);
+    data_file >> temp_GD;
+    data_file.ignore(2);
+    data_file >> games_played;
+    data_file.ignore(2);
+    data_file >> wins;
+    data_file.ignore(2);
+    data_file >> loss;
+    data_file.ignore(2);
+
+    char * nameptr = new char [strlen(temp_name)+1];
+    strcpy(nameptr, temp_name);
+
+    std::string * countryptr = new std::string(temp_country);
+    
+    Soccer test_sport (temp_goals, temp_GA, temp_GD, games_played, wins, loss);
+
+    Athlete temp_athlete(nameptr, countryptr, temp_rank);
+    temp_athlete.insert(test_sport);
+    Node temp_node;
+    temp_node.insert(temp_athlete);
+    create_BT(temp_node);
+
+    delete [] nameptr;
+    delete countryptr;
+    return read_soccer_event(data_file, ++count);
+}
+bool List::search(const int & rank)
+{
+    std::cout << "Hockey Medal" << std::endl;
+    for(int i = 0; i < size; i++)
+        {
+            if(Hockey_Event[i]->key() == rank)
+            {
+                Hockey_Event[i]->display();
+                std::cout << std::endl;
+            }
+        }
+    std::cout << "Basketball Medal" << std::endl;
+    for(Node * curr: Basketball_Event)
+    {
+        if(curr->key() == rank)
+        {
+            curr->display();
+            std::cout << std::endl;
+        }
+    }
+    std::cout << "Basketball Medal" << std::endl;
+    Soccer_Event->search(rank);
+    return true;
+}
+
 bool List::display() const
 {
     if(Hockey_Event)
         display_array(Hockey_Event, 0);
-    //if(Basketball_Event)
+    display_vector();
         // display basketball event
     if(Soccer_Event)
         Soccer_Event->display();
         // display soccer event
     return true;
+}
+bool List::display_hockey() const
+{
+    if(Hockey_Event)
+        return display_array(Hockey_Event, 0);
+    return false;
+}
+bool List::display_basketball() const
+{
+    display_vector();
+    return true;
+}
+bool List::display_soccer() const
+{
+    if(Soccer_Event)
+        return Soccer_Event->display();
+    return false;
 }
 std::ostream & operator << (std::ostream & output, const List & rhs)
 {
@@ -657,6 +818,24 @@ bool List::remove_array(Node **& curr, int index)
 	// Go to next index
 	return remove_array(curr, ++index);
 }
+bool List::create_vector(const Node & rhs)
+{
+    Node * temp = new Node(rhs);
+    Basketball_Event.push_back(temp);
+    return true;
+}
+bool List::create_BT(const Node & curr)
+{
+    Soccer_Event->insert(curr);
+    return true;
+}
+bool List::remove_vector()
+{
+    for(Node * curr: Basketball_Event)
+        delete curr;
+    Basketball_Event.clear();
+    return true;
+}
 bool List::display_array(Node ** curr, int index) const
 {
     if(index == size)
@@ -666,6 +845,16 @@ bool List::display_array(Node ** curr, int index) const
     if(curr[index])
     {
         curr[index]->display();
+        std::cout << std::endl;
     }
     return display_array(curr, ++index);
+}
+bool List::display_vector() const
+{
+    for(Node * curr: Basketball_Event)
+    {
+        curr->display();
+        std::cout << std::endl;
+    }
+    return true;
 }

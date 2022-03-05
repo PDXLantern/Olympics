@@ -1,0 +1,5 @@
+United States men's Olympic basketball team; United States; 1; 594; 80; 122; 6; 5; 1;
+France men's national basketball team; France; 2; 515; 58; 122; 6; 5; 1;
+Australia men's national basketball team; Australia; 3; 541; 75; 98; 6; 5; 1;
+Slovenia men's national basketball team; Slovakia; 4; 605; 80; 123; 6; 4; 2;
+Italy men's national basketball team; Italy; 5; 330; 38; 71; 4; 2; 2;
