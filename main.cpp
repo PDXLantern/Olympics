@@ -36,43 +36,138 @@ bool console (List & active_list, int & cmd)
     case 1:
     {
         std::cout << "-- All Sports Events --" << std::endl;
-        active_list.display();
+        try
+        {
+            bool display_flag;
+            display_flag = active_list.display();
+            if(display_flag == false)
+                throw display_flag;
+        }
+        catch(bool display_flag)
+        {
+            std::cout << "Error: Failed to Sports Events" << std::endl;
+        }
         break;
     }
     case 2:
     {
         std::cout << "-- Hockey Event --" << std::endl;
-        active_list.display_hockey();
+        try
+        {
+            bool display_flag;
+            display_flag = active_list.display_hockey();
+            if(display_flag == false)
+                throw display_flag;
+        }
+        catch(bool display_flag)
+        {
+            std::cout << "Error: Failed to Display Hockey Event" << std::endl;
+        }
+        catch(...)
+        {
+            std::cout << "Error: Display Failed" << std::endl;
+        }
         break;
     }
     case 3:
     {
         std::cout << "-- Basketball Event --" << std::endl;
-        active_list.display_basketball();
+        try{
+            bool display_flag;
+            display_flag = active_list.display_basketball();
+            if(display_flag == false)
+                throw display_flag;
+        }
+        catch(bool display_flag)
+        {
+            std::cout << "Error: Failed to Display Basketball Event" << std::endl;
+        }
+        catch(...)
+        {
+            std::cout << "Error: Display Failed" << std::endl;
+        }
         break;
     }
     case 4:
     {
         std::cout << "--Soccer Event--" << std::endl;
-        active_list.display_soccer();
+        try
+        {
+            bool display_flag;
+            display_flag = active_list.display_soccer();
+            if(display_flag == false)
+            {
+                throw display_flag;
+            }
+        }
+        catch(bool display_flag)
+        {
+            std::cout << "Error: Failed to Display Soccer Event" << std::endl;
+        }
+        catch(...)
+        {
+            std::cout << "Error: Display Failed" << std::endl;
+        }
         break;
     }
     case 5:
     {
         std::cout << "--Gold Medals--" << std::endl;
-        active_list.search(1);
+        try 
+        {
+            bool medal_flag;
+            medal_flag = active_list.search(1);
+            if(medal_flag == false)
+                throw medal_flag;
+        }
+        catch(bool flag)
+        {
+            std::cout << "Error: Search for Gold Medals Failed" << std::endl;
+        }
+        catch(...)
+        {
+            std::cout << "Error: Search Failed" << std::endl;
+        }
         break;
     }
     case 6:
     {
         std::cout << "--Silver Medals--" << std::endl;
-        active_list.search(2);
+        try 
+        {
+            bool medal_flag;
+            medal_flag = active_list.search(2);
+            if(medal_flag == false)
+                throw medal_flag;
+        }
+        catch(bool flag)
+        {
+            std::cout << "Error: Search for Gold Medals Failed" << std::endl;
+        }
+        catch(...)
+        {
+            std::cout << "Error: Search Failed" << std::endl;
+        }
         break;
     }
     case 7:
     {
         std::cout << "--Bronze Medals--" << std::endl;
-        active_list.search(3);
+        try 
+        {
+            bool medal_flag;
+            medal_flag = active_list.search(3);
+            if(medal_flag == false)
+                throw medal_flag;
+        }
+        catch(bool flag)
+        {
+            std::cout << "Error: Search for Gold Medals Failed" << std::endl;
+        }
+        catch(...)
+        {
+            std::cout << "Error: Search Failed" << std::endl;
+        }
         break;
     }
     default:

@@ -333,8 +333,12 @@ BinaryTree::~BinaryTree()
 // - binarytree display
 bool BinaryTree::display() const
 {
+    if(!root)
+    {
+        return false;
+    }
     this->display(root);
-    return false;
+    return true;
 }
 // - binarytree search
 bool BinaryTree::search(const int & rhs_key) const
@@ -737,6 +741,8 @@ bool List::read_soccer_event(std::fstream & data_file, int count)
 }
 bool List::search(const int & rank)
 {
+    if(rank > 0 && rank > 5)
+        return false;
     std::cout << "Hockey Medal" << std::endl;
     for(int i = 0; i < size; i++)
         {
